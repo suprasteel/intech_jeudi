@@ -1,5 +1,7 @@
 mod entities;
 
+use std::rc::Rc;
+
 use entities::complexe::Complexe;
 use entities::translation::Translation;
 
@@ -12,38 +14,43 @@ fn main() {
     let c3 = c1 + c2;
     // let c3 = Complexe::default();
 
-    
     let translation = Translation::new(4.0, 5.0);
-
-    // Commentaires pour grouper affichage exercice
-    // pub trait Norm {
-    //     fn norm(&self) -> f64;
-    // }
-
-    // impl Norm for Translation {
-    //     fn norm(&self) -> f64 {
-    //         (self.x * self.x + self.y * self.y).sqrt()
-    //     }
-    // }
 
     translation.norm();
     c3.norm();
 
-    // let mut list = vec![];
+    // utiliser box, allouer en heap
+    let box_complexe_3 = Box::new(c3);
+    let box_translation = Box::new(translation);
 
-    // list.push(translation);
-    // list.push(c3);
+    // un vecteur qui travaille sur des types implémentants Norm
+    let mut list: Vec<Box<dyn Norm>> = vec![];
 
-    // list.iter().for_each(
-    //     list.norm()
-    // );
+    let _slice = &list[..];
+
+    // pousser deux type différents dans notre liste
+    list.push(box_complexe_3);
+    list.push(box_translation);
+
+    // un itérateur mutablqui prend l'ownership des valeurs de la liste
+    list.into_iter().for_each(|a| println!("{:?}", a));
 
     println!("{} + {} = {}", c1, c2, c3); // objectif: un comportement cohérent
+
+    // présentation du smartpointer Rc
+    let rc_1 = Rc::new("hello word");
+
+    {
+        let _rc_2 = rc_1.clone();
+    }
+
+    dbg!(rc_1);
 }
 
 mod test_main {
-
+    #[allow(unused_imports)]
     use super::entities::complexe::Complexe;
+    #[allow(unused_imports)]
     use super::entities::translation::Translation;
 
     #[test]

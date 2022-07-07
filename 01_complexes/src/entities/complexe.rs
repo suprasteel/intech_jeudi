@@ -47,9 +47,11 @@ impl Norm for Complexe {
 }
 
 mod test {
-
-    use crate::entities::Norm;
+    
+    #[allow(unused_imports)]
     use super::Complexe;
+    #[allow(unused_imports)]
+    use crate::entities::Norm;
 
     #[test]
     fn test_complexe_addition() {
@@ -59,12 +61,9 @@ mod test {
         assert_eq!(c_valid, c1 + c2);
     }
 
-    
     #[test]
-    fn test_norm () {
+    fn test_norm() {
         let c1 = Complexe::new(1.0, 1.0);
         assert_eq!(c1.norm(), 2.0_f64.sqrt());
     }
-    
-    
 }
